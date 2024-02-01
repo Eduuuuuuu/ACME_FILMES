@@ -1,6 +1,6 @@
-var infoFilmes = require('../Modulo/filmes.js')
+var infoFilmes = require('../modulo/filmes.js')
 
-const getListarFilmes = () => {
+const getListarTodosFilmes = () => {
     const filmes = infoFilmes.filmes.filmes
 
     let jsonFilmes = {}
@@ -30,15 +30,37 @@ const getListarFilmes = () => {
 
 }
 
-const getDadosFilmes = () => {
+const getDadosFilmes = (idFilme) => {
     const filmes = infoFilmes.filmes.filmes
 
     let jsonFilmes = {}
-    let arrayFilmes = []
-    let filtro = 'id'
+    let id = idFilme, 
+    situacao = false
 
+    filmes.forEach((filme) => {
+
+        if (filme.id == id) {
+
+            jsonFilmes = {
+
+                id: filme.id,
+                nome: filme.nome
+
+            }
+
+            situacao = true
+
+        }
+    })
+
+    if (situacao) 
+        return jsonFilmes
+    else 
+        return false
+    
 }
 
 module.exports = {
-    getListarFilmes
+    getListarTodosFilmes,
+    getDadosFilmes
 }

@@ -25,14 +25,15 @@ app.use((request, response, next) => {
 
 app.get('/v1/ACMEFilmes/filmes', cors(), async function(request, respose, next) {
 
-    respose.json(funcoes.getListarFilmes())
+    respose.json(funcoes.getListarTodosFilmes())
     respose.status(200)
 
 })
 
-app.get('v1/ACMEFilmes/filme/1', cors(), async function(request, response, next) {
+app.get('/v1/ACMEFilmes/filme/:id', cors(), async function(request, response, next) {
     
-    response.json(funcoes.getListarFilmes())
+    let idFilme = request.params.id
+    response.json(funcoes.getDadosFilmes(idFilme))
     response.status(200)
 })
 
