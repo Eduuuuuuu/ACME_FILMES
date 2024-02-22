@@ -82,6 +82,29 @@ app.get('/v2/ACMEFilmes/filmes', cors(), async function(request, response) {
     }
 })
 
+//EndPoint: Retorna o filme filtrando pelo ID
+app.get('/v2/ACMEFilmes/filme/:id', cors(), async function(request, response) {
+
+    //Recebe o ID da requisição
+    let idFilme = request.params.id;
+
+    //Encaminha o ID para a controller buscar o filme
+    let dadosFilme = await controllerFilmes.getBuscarFilme(idFilme);
+
+    response.status(dadosFilme.status_code);
+    response.json(dadosFilme);
+})
+
+app.get('/v2/ACMEFilmes/filmes/filtro', cors(), async function(request, response) {
+
+    let filtro = request.query.nome;
+
+    let dadosFilmes = await controllerFilmes.getFilmesNome(filtro);
+
+    response.status(dadosFilmes.status_code);
+    response.json(dadosFilmes);
+})
+
 //Executa a API e faz ela ficar aguardando requisições
 app.listen('8080', function() {
     console.log('API funcionando!!')
