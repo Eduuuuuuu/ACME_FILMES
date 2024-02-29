@@ -19,6 +19,13 @@
         Após a instalação das bibliotecas, devemos inicializar o prisma no projeto:
             - npx prisma init (Irá inicializar o PRISMA)
 
+        Para reinstalar o prisma e atualizar as dependências:   
+            - npm i (Irá atualizar todas as dependências)
+            - no package.json caso não queira atualizar todas as dependências basta tirar o "^" do @prisma/client
+
+        Caso troque de máquina e sincronizar o Banco de Dados novamente: 
+            - npx prisma generate (Serve para ressincronizar o Banco de Dados)
+
  */
 
 //Import das bibliotecas do projeto
@@ -32,7 +39,7 @@ const app = express()
 app.use((request, response, next) => {
 
     response.header('Access-Control-Allow-Origin', '*')
-    response.header('Access-Control-Allow-Methods', 'GET')
+    response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
 
     app.use(cors())
 
@@ -46,6 +53,10 @@ app.use((request, response, next) => {
 
 
 /***********************************************************************************************************************/
+
+////Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
+const bodyParserJSON = bodyParser.json();
+
 
 //EndPoint: Versão 1.0 - retorna todos os filmes do arquivo filmes.js pelo ID
           //Periodo de funcionamento: 01/2024 até 02/2024
@@ -103,6 +114,18 @@ app.get('/v2/ACMEFilmes/filmes/filtro', cors(), async function(request, response
 
     response.status(dadosFilmes.status_code);
     response.json(dadosFilmes);
+})
+
+app.post('/v2/ACMEFilmes/filme', cors(), bodyParserJSON, async function(request, response){
+
+    //Recebe todos os dados encaminhados na requisição pelo body
+    let dadosBody = request.body;
+
+    //Encaminha os dados para o controller enviar para o DAO
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody);
+    
+    response.status(resultDadosNovoFilme.status_code);
+    response.json(resultDadosNovoFilme);
 })
 
 //Executa a API e faz ela ficar aguardando requisições
