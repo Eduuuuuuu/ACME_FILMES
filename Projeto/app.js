@@ -72,7 +72,9 @@ app.get('/v1/ACMEFilmes/filmes', cors(), async function(request, respose, next) 
 app.get('/v1/ACMEFilmes/filme/:id', cors(), async function(request, response, next) {
     
     let idFilme = request.params.id
+
     response.json(funcoes.getDadosFilmes(idFilme))
+    
     response.status(200)
 })
 

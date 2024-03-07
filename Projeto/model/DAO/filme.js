@@ -16,24 +16,49 @@ const insertFilme = async function(dadosFilme) {
     
     try {
 
-        let sql = `insert into tbl_filme (
-            nome,
-            sinopse,
-            duracao,
-            data_lancamento,
-            data_relancamento,
-            foto_capa,
-            valor_unitario
-        ) values (
-            '${dadosFilme.nome}',
-            '${dadosFilme.sinopse}',
-            '${dadosFilme.duracao}',
-            '${dadosFilme.data_lancamento}',
-            '${dadosFilme.data_relancamento}',
-            '${dadosFilme.foto_capa}',
-            '${dadosFilme.valor_unitario}'
-        )`;
+        let sql;
 
+        if (dadosFilme.data_relancamento != ''      &&
+            dadosFilme.data_relancamento != null    &&
+            dadosFilme.data_relancamento != undefined) {
+
+            sql = `insert into tbl_filme (
+                                            nome,
+                                            sinopse,
+                                            duracao,
+                                            data_lancamento,
+                                            data_relancamento,
+                                            foto_capa,
+                                            valor_unitario
+        ) values (
+                                            '${dadosFilme.nome}',
+                                            '${dadosFilme.sinopse}',
+                                            '${dadosFilme.duracao}',
+                                            '${dadosFilme.data_lancamento}',
+                                            '${dadosFilme.data_relancamento}',
+                                            '${dadosFilme.foto_capa}',
+                                            '${dadosFilme.valor_unitario}'
+            )`;
+        }else {
+            
+            sql = `insert into tbl_filme (
+                                            nome,
+                                            sinopse,
+                                            duracao,
+                                            data_lancamento,
+                                            data_relancamento,
+                                            foto_capa,
+                                            valor_unitario
+        ) values (
+                    '${dadosFilme.nome}',
+                    '${dadosFilme.sinopse}',
+                    '${dadosFilme.duracao}',
+                    '${dadosFilme.data_lancamento}',
+                    null,
+                    '${dadosFilme.foto_capa}',
+                    '${dadosFilme.valor_unitario}'
+            )`
+        }
         //$executeRawUnsafe() - serve para executar scripts sem retorno de dados (insert, update e delete)
         //$queryRawUnsafe() - serve para executar scripts com retorno de dados (select)
         let result = await prisma.$executeRawUnsafe(sql);
@@ -93,6 +118,7 @@ const selectByIDFilme = async function(id) {
     }
 }
 
+//Função para buscar um filme no BD filtrando pelo nome
 const selectByNome = async function(nome) {
     try {
         
@@ -107,11 +133,27 @@ const selectByNome = async function(nome) {
     }
 }
 
+//Função para mostrar o ID do filme no BD
+const selectByLastId = async function() {
+    try {
+
+        let sql =  `select cast(last_insert_id() as decimal) as id from tbl_filme limit 1`;
+
+        let rsFilme = await prisma.$queryRawUnsafe(sql);
+
+        return rsFilme;
+
+    } catch (error) {
+        return false;
+    }
+}
+
 module.exports = {
     insertFilme,
     updateFilme,
     deleteFilme,
     selectAllFilmes,
     selectByIDFilme,
-    selectByNome
+    selectByNome,
+    selectByLastId
 }
