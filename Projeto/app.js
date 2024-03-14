@@ -120,14 +120,39 @@ app.get('/v2/ACMEFilmes/filmes/filtro', cors(), async function(request, response
 
 app.post('/v2/ACMEFilmes/filme', cors(), bodyParserJSON, async function(request, response){
 
+    //Recebe o content-type com o tipo de dados encaminhado na requisição
+    let contentType = request.headers['content-type'];
+
     //Recebe todos os dados encaminhados na requisição pelo body
     let dadosBody = request.body;
 
     //Encaminha os dados para o controller enviar para o DAO
-    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody);
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType);
     
     response.status(resultDadosNovoFilme.status_code);
     response.json(resultDadosNovoFilme);
+})
+
+app.delete('/v2/ACMEFilmes/deleteFilme/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let idFilme = request.params.id;
+
+    let dadosFilme = await controllerFilmes.setExcluirFilme(idFilme);
+
+    response.status(dadosFilme.status_code);
+    response.json(dadosFilme);
+})
+
+app.put('/v2/ACMEFilmes/update', cors(), bodyParserJSON, async function(request, response){
+
+    let contentType = request.headers['content-type'];
+
+    let dadosBody = request.body;
+
+    let updateFilme = await controllerFilmes.setAtualizarFilme(dadosBody, contentType);
+
+    response.status(updateFilme.status_code);
+    response.json(updateFilme);
 })
 
 //Executa a API e faz ela ficar aguardando requisições

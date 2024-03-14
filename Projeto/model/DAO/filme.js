@@ -79,8 +79,38 @@ const updateFilme = async function() {
 }
 
 //Função para excluir um filme no BD
-const deleteFilme = async function() {
+const deleteFilme = async function(id, dadosFilme) {
+    try{
 
+        let sql;
+
+        if (dadosFilme.data_relancamento != ''      &&
+            dadosFilme.data_relancamento != null    &&
+            dadosFilme.data_relancamento != undefined) {
+
+                sql = `update tbl_filme set
+                                               nome = '${dadosFilme.nome}',
+                                               sinopse = '${dadosFilme.sinopse}',
+                                               duracao = '${dadosFilme.duracao}',
+                                               data_lancamento = '${dadosFilme.data_lancamento}',
+                                               data_relancamento = '${dadosFilme.data_relancamento}',
+                                               foto_capa = '${dadosFilme.foto_capa}',
+                                               valor_unitario = '${dadosFilme.valor_unitario}'
+                where id = ${id}`;
+        }else {
+            sql = `update tbl_filme set
+                                            nome = '${dadosFilme.nome}',
+                                            sinopse = '${dadosFilme.sinopse}',
+                                            duracao = '${dadosFilme.duracao}',
+                                            data_lancamento = '${dadosFilme.data_lancamento}',
+                                            data_relancamento = '${dadosFilme.data_relancamento}',
+                                            foto_capa = '${dadosFilme.foto_capa}',
+                                            valor_unitario = '${dadosFilme.valor_unitario}'
+                    where id = ${id}`;
+        }
+    }catch(error){
+        return false;
+    }
 }
 
 //Função para listar todos os filmes do BD
