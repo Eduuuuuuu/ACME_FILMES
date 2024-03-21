@@ -143,13 +143,15 @@ app.delete('/v2/ACMEFilmes/deleteFilme/:id', cors(), bodyParserJSON, async funct
     response.json(dadosFilme);
 })
 
-app.put('/v2/ACMEFilmes/update', cors(), bodyParserJSON, async function(request, response){
+app.put('/v2/ACMEFilmes/update/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let idFilme = request.params.id
 
     let contentType = request.headers['content-type'];
 
     let dadosBody = request.body;
 
-    let updateFilme = await controllerFilmes.setAtualizarFilme(dadosBody, contentType);
+    let updateFilme = await controllerFilmes.setAtualizarFilme(idFilme, dadosBody, contentType);
 
     response.status(updateFilme.status_code);
     response.json(updateFilme);

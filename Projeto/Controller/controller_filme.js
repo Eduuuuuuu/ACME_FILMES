@@ -84,25 +84,105 @@ const setInserirNovoFilme = async function(dadosFilme, contentType) {
 }
 
 //Função para validar e atualizar um Filme
-const setAtualizarFilme = async function() {
+const setAtualizarFilme = async function(id, dadosFilme, contentType) {
+    
+    try{ 
 
+        let idFilme = id;
+
+        if(idFilme == '' || idFilme == undefined || isNaN (idFilme)){
+            
+            return message.ERROR_INVALID_ID
+            
+        }else{
+
+        if (String(contentType).toLowerCase() == 'application/json') {
+        
+            let updateFilmeJSON = {};
+
+            if ( dadosFilme.nome == ''           || dadosFilme.nome == undefined            || dadosFilme.nome == null            || dadosFilme.nome.length > 80             ||
+                dadosFilme.sinopse == ''         || dadosFilme.sinopse == undefined         || dadosFilme.sinopse == null         || dadosFilme.sinopse.length > 65000       ||
+                dadosFilme.duracao == ''         || dadosFilme.duracao == undefined         || dadosFilme.duracao == null         || dadosFilme.duracao.length > 8           ||
+                dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento == null || dadosFilme.data_lancamento.length != 10 ||
+                dadosFilme.foto_capa == ''       || dadosFilme.foto_capa == undefined       || dadosFilme.foto_capa == null       || dadosFilme.foto_capa.length > 200       ||
+                dadosFilme.valor_unitario.length > 6
+            ) {
+                return message.ERROR_REQUIRED_FIELDS; //400
+            }else {
+
+                let validateStatus = false;
+
+                if (dadosFilme.data_relancamento != null && 
+                    dadosFilme.data_relancamento != ''   &&
+                    dadosFilme.data_relancamento != undefined) {
+
+                    if (dadosFilme.data_relancamento.length != 10) {
+                        return message.ERROR_REQUIRED_FIELDS; //400
+                    }else{ 
+                        validateStatus = true;
+                    }
+                }else{
+                    validateStatus = true;
+                }
+
+                let filmeById = await filmeDAO.selectByIDFilme(id);
+
+                if(filmeById.length > 0) {
+
+                    if(validateStatus) {
+
+                        let updateFilme = await filmeDAO.updateFilme(id, dadosFilme);
+                        
+                        if(updateFilme) {
+
+                            updateFilmeJSON.filme         = dadosFilme;
+                            updateFilmeJSON.status        = message.SUCESS_UPTADE_ITEM.status;
+                            updateFilmeJSON.status_code   = message.SUCESS_UPTADE_ITEM.status_code;
+                            updateFilmeJSON.message       = message.SUCESS_UPTADE_ITEM.message; 
+
+                            return updateFilmeJSON; //201
+                    }else {
+                        return message.ERROR_INTERNAL_SERVER_DB; //500
+                    }
+                }
+            }else{
+                return message.ERROR_NOT_FOUND; //415
+            }
+        }
+        }else{
+            return message.ERROR_CONTENT_TYPE
+        }
+    }
+    }catch(error){
+        return message.ERROR_INTERNAL_SERVER //500 erro na controller
+    }
 }
 
 //Função para exluir um Filme
 const setExcluirFilme = async function(id) {
     try{
 
+        
         let idFilme = id;
 
         if (idFilme == '' || idFilme == undefined || isNaN(idFilme)) {
             return message.ERROR_INVALID_ID;
         }else {
+            let filmeById = await filmeDAO.selectByIDFilme(id)
 
-            let dadosFilme = await filmeDAO.deleteFilme(id);
+            if (filmeById.length > 0 ){
+                let deleteFilme = await filmeDAO.deleteFilme(id);
 
-            if (dadosFilme)
-                return message.SUCCESS_DELETED_ITEM;
+                if (deleteFilme){
+                    return message.SUCCESS_DELETED_ITEM
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else{
+                return message.ERROR_NOT_FOUND
+            }
         }
+        
     }catch(error){
         return message.ERROR_INTERNAL_SERVER
     }
