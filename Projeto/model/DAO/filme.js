@@ -1,5 +1,5 @@
 /*******************************************************************************************************************************************
- * Objetivo: Arquivo responsável pelo acessp ap Banco de dados MySQL, aqui faremos o CRUD na tabela de filme 
+ * Objetivo: Arquivo responsável pelo acesso ao Banco de dados MySQL, aqui faremos o CRUD na tabela de filme 
  * Data: 01/02/2024
  * Autor: Eduardo Vilas Boas
  * Versão: 1.0.0
@@ -74,7 +74,7 @@ const insertFilme = async function(dadosFilme) {
 }
 
 //Função para atualizar um filme no BD
-const updateFilme = async function(id,dadosFilme) {
+const updateFilme = async function(id, dadosFilme) {
     try{
 
         let sql;
@@ -94,13 +94,13 @@ const updateFilme = async function(id,dadosFilme) {
                     where id = ${id}`;
         }else {
             sql = `update tbl_filme set
-                                            nome = '${dadosFilme.nome}',
-                                            sinopse = '${dadosFilme.sinopse}',
-                                            duracao = '${dadosFilme.duracao}',
-                                            data_lancamento = '${dadosFilme.data_lancamento}',
-                                            data_relancamento = null,
-                                            foto_capa = '${dadosFilme.foto_capa}',
-                                            valor_unitario = '${dadosFilme.valor_unitario}'
+                                               nome = '${dadosFilme.nome}',
+                                               sinopse = '${dadosFilme.sinopse}',
+                                               duracao = '${dadosFilme.duracao}',
+                                               data_lancamento = '${dadosFilme.data_lancamento}',
+                                               data_relancamento = null,
+                                               foto_capa = '${dadosFilme.foto_capa}',
+                                               valor_unitario = '${dadosFilme.valor_unitario}'
                     where id = ${id}`;
         }
 
@@ -118,15 +118,15 @@ const updateFilme = async function(id,dadosFilme) {
 
 //Função para excluir um filme no BD
 const deleteFilme = async function(id) {
-    try{
+    try {
 
-        let sql = `delete from tbl_filme where id = ${id}`
+        let sql = `delete from tbl_filme where id = ${id}`;
 
         let rsFilmes = await prisma.$queryRawUnsafe(sql)
 
         return rsFilmes
         
-    }catch(error){
+    } catch(error) {
         return false
     }
 }
@@ -154,7 +154,7 @@ const selectAllFilmes = async function() {
 const selectByIDFilme = async function(id) {
     try {
         //Script SQL para filtrar pelo ID
-        let sql = `select * from tbl_filme where id = ${id}`;
+        let sql = `select * from tbl_filme where id_filme = ${id}`;
 
         //Executa o SQL no Banco de Dados
         let rsFilme = await prisma.$queryRawUnsafe(sql);

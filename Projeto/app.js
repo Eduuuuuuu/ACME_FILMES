@@ -49,7 +49,8 @@ app.use((request, response, next) => {
 
 /*****************************  Import dos arquivos da controller do projeto  ******************************************/
     const controllerFilmes = require('./Controller/controller_filme.js');
- 
+    const controllerGeneros = require('./Controller/controller_genero.js');
+    const controllerClassificacao = require('./Controller/controller_classificacao.js');
 
 
 /***********************************************************************************************************************/
@@ -57,6 +58,7 @@ app.use((request, response, next) => {
 ////Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
 const bodyParserJSON = bodyParser.json();
 
+//EndPoints dos filmes
 
 //EndPoint: Versão 1.0 - retorna todos os filmes do arquivo filmes.js pelo ID
           //Periodo de funcionamento: 01/2024 até 02/2024
@@ -155,6 +157,128 @@ app.put('/v2/ACMEFilmes/update/:id', cors(), bodyParserJSON, async function(requ
 
     response.status(updateFilme.status_code);
     response.json(updateFilme);
+})
+
+//EndPoints dos generos
+
+app.get('/v2/ACMEFilmes/generos', cors(), async function(request, response){
+
+    let dadosGeneros = await controllerGeneros.getListarGeneros();
+
+    if(dadosGeneros) {
+        response.json(dadosGeneros);
+        response.status(200);
+    }else {
+        response.json({message: 'Nenhum requisito foi encontrado'});
+        response.status(404);
+    }
+})
+
+app.get('/v2/ACMEFilmes/genero/:id', cors(), async function(request, response){
+
+    let idGenero = request.params.id;
+
+    let dadosGenero = await controllerGeneros.getBuscarGenero(idGenero);
+
+    response.status(dadosGenero.status_code);
+    response.json(dadosGenero);
+})
+
+app.post('/v2/ACMEFilmes/genero', cors(), bodyParserJSON, async function(request, response){
+    
+    let contentType = request.headers['content-type'];
+
+    let dadosBody = request.body;
+
+    let resultDadosNovoGenero = await controllerGeneros.setInserirNovoGenero(dadosBody, contentType);
+    
+    response.status(resultDadosNovoGenero.status_code);
+    response.json(resultDadosNovoGenero);
+})
+
+app.delete('/v2/ACMEFilmes/deleteGenero/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let idGenero = request.params.id;
+
+    let dadosGenero = await controllerGeneros.setExcluirGenero(idGenero);
+
+    response.status(dadosGenero.status_code);
+    response.json(dadosGenero);
+})
+
+app.put('/v2/ACMEFilmes/updateGenero/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let idGenero = request.params.id
+
+    let contentType = request.headers['content-type'];
+
+    let dadosBody = request.body;
+
+    let updateGenero = await controllerGeneros.setAtualizarGenero(idGenero, dadosBody, contentType);
+
+    response.status(updateGenero.status_code);
+    response.json(updateGenero);
+})
+
+//EndPoints das classificações
+
+app.get('/v2/ACMEFilmes/classificacoes', cors(), async function(request, response){
+
+    let dadosClassificacoes = await controllerClassificacao.getListarClassificacao();
+
+    if (dadosClassificacoes) {
+        response.json(dadosClassificacoes);
+        response.status(200);
+    } else {
+        response.json({message: 'Nenhum requisito foi encontrado'});
+        response.status(404);
+    }
+})
+
+app.get('/v2/ACMEFilmes/classificacao/:id', cors(), async function(request, response){
+
+    let idClassificacao = request.params.id;
+
+    let dadosClassificacao = await controllerClassificacao.getBuscarClassificacao(idClassificacao);
+
+    response.status(dadosClassificacao.status_code);
+    response.json(dadosClassificacao)
+})
+
+app.post('/v2/ACMEFilmes/classificacao', cors(), bodyParserJSON, async function(request, response){
+
+    let contentType = request.headers['content-type'];
+
+    let dadosBody = request.body;
+
+    let resultDadosNovaClassificacao = await controllerClassificacao.setInserirNovaClassificacao(dadosBody, contentType);
+
+    response.status(resultDadosNovaClassificacao.status_code);
+    response.json(resultDadosNovaClassificacao);
+})
+
+app.delete('/v2/ACMEFilmes/deleteClassificacao/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let idClassificacao = request.params.id;
+
+    let dadosClassificacao = await controllerClassificacao.setExcluirClassificacao(idClassificacao);
+
+    response.status(dadosClassificacao.status_code);
+    response.json(dadosClassificacao);
+})
+
+app.put('/v2/ACMEFilmes/updateClassificacao/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let idClassificacao = request.params.id
+
+    let contentType = request.headers['content-type'];
+
+    let dadosBody = request.body;
+
+    let updateClassificacao = await controllerClassificacao.setAtualizarClassificacao(idClassificacao, dadosBody, contentType);
+
+    response.status(updateClassificacao.status_code);
+    response.json(updateClassificacao);
 })
 
 //Executa a API e faz ela ficar aguardando requisições
