@@ -58,7 +58,7 @@ app.use((request, response, next) => {
 ////Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
 const bodyParserJSON = bodyParser.json();
 
-//EndPoints dos filmes
+//************************************************************EndPoints dos filmes************************************************************
 
 //EndPoint: Versão 1.0 - retorna todos os filmes do arquivo filmes.js pelo ID
           //Periodo de funcionamento: 01/2024 até 02/2024
@@ -159,7 +159,7 @@ app.put('/v2/ACMEFilmes/update/:id', cors(), bodyParserJSON, async function(requ
     response.json(updateFilme);
 })
 
-//EndPoints dos generos
+//************************************************************EndPoints dos generos************************************************************
 
 app.get('/v2/ACMEFilmes/generos', cors(), async function(request, response){
 
@@ -220,7 +220,7 @@ app.put('/v2/ACMEFilmes/updateGenero/:id', cors(), bodyParserJSON, async functio
     response.json(updateGenero);
 })
 
-//EndPoints das classificações
+//************************************************************EndPoints das classificações************************************************************
 
 app.get('/v2/ACMEFilmes/classificacoes', cors(), async function(request, response){
 

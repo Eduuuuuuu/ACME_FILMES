@@ -18,7 +18,7 @@ const ERROR_INTERNAL_SERVER    =  {status: false, status_code: 500, message: 'N√
 
 const SUCCESS_CREATED_ITEM     =  {status: true, status_code: 201, message: 'Item criado com sucesso !!'}
 const SUCCESS_DELETED_ITEM     =  {status: true, status_code: 201, message: 'Item exclu√≠do com sucesso !!'}
-const SUCESS_UPTADE_ITEM       =  {status: true, status_code: 200, message: 'Item atualizado com sucesso !!'}
+const SUCCESS_UPDATE_ITEM      =  {status: true, status_code: 200, message: 'Item atualizado com sucesso !!'}
 
 module.exports = {
     ERROR_INVALID_ID,
@@ -29,5 +29,5 @@ module.exports = {
     ERROR_CONTENT_TYPE,
     ERROR_INTERNAL_SERVER,
     SUCCESS_DELETED_ITEM,
-    SUCESS_UPTADE_ITEM
+    SUCCESS_UPDATE_ITEM
 }

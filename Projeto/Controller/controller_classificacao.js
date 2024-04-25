@@ -180,9 +180,9 @@ const setAtualizarClassificacao = async function(id, dadosClassificacao, content
                             if (updateClassificacao) {
 
                                 updateClassificacaoJSON.classificacao = dadosClassificacao;
-                                updateClassificacaoJSON.status        = message.SUCESS_UPTADE_ITEM.status;
-                                updateClassificacaoJSON.status_code   = message.SUCESS_UPTADE_ITEM.status_code;
-                                updateClassificacaoJSON.message       = message.SUCESS_UPTADE_ITEM.message;
+                                updateClassificacaoJSON.status        = message.SUCCESS_UPDATE_ITEM.status;
+                                updateClassificacaoJSON.status_code   = message.SUCCESS_UPDATE_ITEM.status_code;
+                                updateClassificacaoJSON.message       = message.SUCCESS_UPDATE_ITEM.message;
 
                                 return updateClassificacaoJSON;
 
