@@ -10,7 +10,7 @@ const {PrismaClient} = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-const selectAllAtores = async function(){
+const selectAllAtores = async function() {
     let sql = 'select * from tbl_ator';
 
     let rsAtores = await prisma.$queryRawUnsafe(sql)
@@ -21,7 +21,7 @@ const selectAllAtores = async function(){
         return false
 }
 
-const selectByIdAtor = async function(id){
+const selectByIdAtor = async function(id) {
     try {
         
         let sql = `select * from tbl_ator where id_ator = ${id}`;
@@ -34,7 +34,7 @@ const selectByIdAtor = async function(id){
     }
 }
 
-const deleteAtor = async function (id) {
+const deleteAtor = async function(id) {
     try {
 
         let sql = `delete from tbl_ator where id_ator = ${id}`;
@@ -47,7 +47,7 @@ const deleteAtor = async function (id) {
     }
 }
 
-const selectByLastIdAtor = async function () {
+const selectByLastIdAtor = async function() {
     try {
         
         let sql ='select cast(last_insert_id() as decimal) as id_ator from tbl_ator limit 1';
@@ -60,10 +60,10 @@ const selectByLastIdAtor = async function () {
     }
 }
 
-const selectByNomeAtor = async function (nome) {
+const selectByNomeAtor = async function(nome) {
     try {
 
-        let sql = `select * from tbl_ator where nome like "%${nome}%"`
+        let sql = `select * from tbl_ator where nome like "%${nome}%"`;
 
         let rsAtor = await prisma.$queryRawUnsafe(sql)
 
@@ -73,7 +73,7 @@ const selectByNomeAtor = async function (nome) {
     }
 }
 
-const insertAtor = async function (dadosAtor){
+const insertAtor = async function(dadosAtor) {
     try {
 
         let sql;
@@ -98,12 +98,13 @@ const insertAtor = async function (dadosAtor){
             return true
         else
             return false
+        
     } catch (error) {
         return false
     }
 }
 
-const updateAtor = async function (id, dadosAtor){
+const updateAtor = async function(id, dadosAtor) {
     try {
 
         let sql;

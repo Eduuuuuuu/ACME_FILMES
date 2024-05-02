@@ -12,7 +12,6 @@ const nacionalidadeAtorDAO = require('../model/DAO/nacionalidadeAtor.js')
 const atorDAO = require('../model/DAO/ator.js')
 
 const getListarAtores = async function() {
-
     try {
 
         let atorJSON = {};
@@ -25,7 +24,7 @@ const getListarAtores = async function() {
 
                 for (let ator of dadosAtores) {
 
-                    let sexoAtor = await sexoDAO.selectByIdSexo(ator.id_sexo)
+                    let sexoAtor = await sexoDAO.selectByIdSexo(id_sexo)
                     delete ator.id_sexo
                     ator.sexo = sexoAtor
 
@@ -33,7 +32,7 @@ const getListarAtores = async function() {
 
                 for (let ator of dadosAtores) {
 
-                    let nacionalidadeAtor = await nacionalidadeAtorDAO.selectByIdAtorNacionalidade(ator.id_nacionalidade)
+                    let nacionalidadeAtor = await nacionalidadeAtorDAO.selectByIdAtorNacionalidade(id_nacionalidade)
                         
                     if (nacionalidadeAtor.length > 0) {
 
@@ -65,7 +64,7 @@ const selectByIdAtor = async function(id) {
 
         let atorJSON = {};
 
-        if (idAtor == '' || idAtor == undefined || isNaN(idAtor)){
+        if (idAtor == '' || idAtor == undefined || isNaN(idAtor)) {
             return message.ERROR_INVALID_ID 
         } else {
 
@@ -122,12 +121,12 @@ const setExcluirAtor = async function(id) {
             
                 let deleteAtor = await atorDAO.deleteAtor(id)
 
-                if (deleteAtor){
+                if (deleteAtor) {
                     return message.SUCCESS_DELETED_ITEM
                 } else {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
-            }else{
+            } else {
                 return message.ERROR_NOT_FOUND
             }
         }
@@ -139,34 +138,36 @@ const setExcluirAtor = async function(id) {
 const selectByNomeAtor = async function(nome) {
     try {
 
-    let atorNome = nome 
+        let atorNome = nome 
 
-    let atorJSON = {}
+        let atorJSON = {}
     
-    if (atorNome == '' || atorNome == undefined || isNaN(atorNome)) {
-        return message.ERROR_INVALID_ID
-    } else {
+        if (atorNome == '' || atorNome == undefined || isNaN(atorNome)) {
+            return message.ERROR_INVALID_ID
+        } else {
             
-        let dadosAtor = await atorDAO.selectByNomeAtor(atorNome)
+            let dadosAtor = await atorDAO.selectByNomeAtor(atorNome)
             
-        if (dadosAtor) {
+            if (dadosAtor) {
                 
-            if (dadosAtor.length > 0) {
+                if (dadosAtor.length > 0) {
 
-                for (let ator of dadosAtor){
+                    for (let ator of dadosAtor) {
                     
-                    let sexoAtor = await sexoDAO.selectByIdSexo(ator.id_sexo)
-                    delete ator.id_sexo
-                    ator.sexo = sexoAtor
+                        let sexoAtor = await sexoDAO.selectByIdSexo(ator.id_sexo)
+                        delete ator.id_sexo
+                        ator.sexo = sexoAtor
 
-                }
+                    }
                 
-                for (let ator of dadosAtor){
+                for (let ator of dadosAtor) {
                         
                     let nacionalidadeAtor = await nacionalidadeAtorDAO.selectByIdAtorNacionalidade(ator.id_nacionalidade)
                         
                     if (nacionalidadeAtor.length > 0) {
+
                         ator.nacionalidade = nacionalidadeAtor
+                        
                     }
                 }
                     
@@ -174,8 +175,9 @@ const selectByNomeAtor = async function(nome) {
                 atorJSON.status_code = 200 
                 return atorJSON
                 
-            } else 
-                return message.ERROR_NOT_FOUND
+                } else {
+                    return message.ERROR_NOT_FOUND
+                }
             } else { 
                 return message.ERROR_INTERNAL_SERVER_DB
             }
@@ -194,7 +196,7 @@ const setAtualizarAtor = async function(id, dadosAtor, contentType) {
              
             if(idAtor == ''|| idAtor == undefined || isNaN(idAtor)) {
                 return message.ERROR_INVALID_ID
-            } else{
+            } else {
                
                 let atorById = await atorDAO.selectByIdAtor(idAtor)
                 
@@ -231,50 +233,59 @@ const setAtualizarAtor = async function(id, dadosAtor, contentType) {
 const setInserirAtor = async function(dadosAtor, contentType) {
     try {
 
-        if(String(contentType).toLowerCase()=='application/json'){
+        if (String(contentType).toLowerCase()=='application/json') {
             
             let novoAtorJSON = {}
             
-            let ultimoID
+            let ultimoID;
 
-            if(dadosAtor.nome == ''            || dadosAtor.nome == undefined            || dadosAtor.nome == null            || dadosAtor.nome.length > 100            ||
-               dadosAtor.data_nascimento == '' || dadosAtor.data_nascimento == undefined || dadosAtor.data_nascimento == null || dadosAtor.data_nascimento.length != 10 ||
-               dadosAtor.biografia == ''       || dadosAtor.biografia == undefined       || dadosAtor.biografia == null       || dadosAtor.biografia.length > 65000     ||
-               dadosAtor.foto == ''            || dadosAtor.foto == undefined            || dadosAtor.foto == null            || dadosAtor.foto.length > 200            ||
-               dadosAtor.sexo[0].nome == ''    || dadosAtor.sexo[0].nome == undefined    || dadosAtor.sexo[0].nome == null    || dadosAtor.sexo[0].nome.length > 20
+            if (dadosAtor.nome == ''            || dadosAtor.nome == undefined            || dadosAtor.nome == null            || dadosAtor.nome.length > 100            ||
+                dadosAtor.data_nascimento == '' || dadosAtor.data_nascimento == undefined || dadosAtor.data_nascimento == null || dadosAtor.data_nascimento.length != 10 ||
+                dadosAtor.biografia == ''       || dadosAtor.biografia == undefined       || dadosAtor.biografia == null       || dadosAtor.biografia.length > 65000     ||
+                dadosAtor.foto == ''            || dadosAtor.foto == undefined            || dadosAtor.foto == null            || dadosAtor.foto.length > 200            ||
+                dadosAtor.sexo[0].nome == ''    || dadosAtor.sexo[0].nome == undefined    || dadosAtor.sexo[0].nome == null    || dadosAtor.sexo[0].nome.length > 20
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
 
                 let validateStatus = true;
     
-                if(validateStatus) {
+                if (validateStatus) {
                     
                     let novoAtor = await atorDAO.insertAtor(dadosAtor)
                     
                     if (novoAtor) {
                        
-                        novoAtorJSON.ator = dadosAtor
-                        novoAtorJSON.status = message.SUCCESS_CREATED_ITEM.status
+                        novoAtorJSON.ator        = dadosAtor
+                        novoAtorJSON.status      = message.SUCCESS_CREATED_ITEM.status
                         novoAtorJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
-                        novoAtorJSON.message = message.SUCCESS_CREATED_ITEM.message
+                        novoAtorJSON.message     = message.SUCCESS_CREATED_ITEM.message
 
                         
-                        ultimoID=await atorDAO.selectLastId()
-                        dadosAtores.id=ultimoID[0].id  
+                        ultimoID = await atorDAO.selectLastId()
+                        
+                        dadosAtor.id = ultimoID[0].id  
                         
                         return novoAtorJSON
-                    }
-    
-                    else{
+
+                    } else{
                         return message.ERROR_INTERNAL_SERVER_DB
                     }
                 }
             }
-        }else{
+        } else {
             return message.ERROR_CONTENT_TYPE
         }
     } catch (error) {
         return message.ERROR_INTERNAL_SERVER
     }
+}
+
+module.exports = {
+    getListarAtores,
+    selectByIdAtor,
+    selectByNomeAtor,
+    setAtualizarAtor,
+    setExcluirAtor,
+    setInserirAtor
 }
