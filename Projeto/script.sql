@@ -56,22 +56,22 @@ id_genero int not null auto_increment primary key,
 nome varchar(45) not null
 );
 
-insert into tbl_genero(
-	nome
-) values (
-	'Ação'
-);
+insert into tbl_genero(nome) values ('Ação');
 
 create table tbl_nacionalidade(
 id_nacionalidade int not null auto_increment primary key,
 nome varchar(45) not null
 );
 
+insert into tbl_nacionalidade (nome) values ('brasileiro'), ('estadunidense'), ('europeu'), ('alemão');
+
 create table tbl_sexo(
 id_sexo int not null auto_increment primary key,
 sigla varchar(1) not null,
 nome varchar(15) not null
 );
+
+insert into tbl_sexo (sigla, nome) values ('F', 'Feminino'), ('M', 'Masculino');
 
 create table tbl_classificacao(
 id_classificacao int not null auto_increment primary key,
@@ -88,9 +88,43 @@ data_nascimento date not null,
 biografia text,
 foto varchar(200) not null,
 id_sexo int not null,
+
 constraint fk_sexo_ator
 foreign key (id_sexo) references tbl_sexo(id_sexo)
 );
+
+insert into tbl_ator (
+	nome,
+    data_nascimento,
+    biografia,
+    foto,
+    id_sexo
+) values (
+	"Keanu Charles Reeves",
+    "1964-09-02",
+    "Keanu Reeves é um ator canadense conhecido por seus aclamados trabalhos no cinema, entre eles Matrix, John Wick e Velocidade Máxima. Ele nasceu em Beirut, mas morou em diversos lugares como Sydney, na Austrália, e Nova Iorque.",
+    "https://br.web.img2.acsta.net/c_310_420/pictures/17/02/06/17/01/343859.jpg",
+    '2'
+), (
+	'Laurence John Fishburne III',
+    '1961-07-30',
+    'No início de sua carreira, assinava como Larry Fishburne.',
+    'https://br.web.img3.acsta.net/c_310_420/pictures/18/07/05/01/06/0676825.jpg',
+    '2'
+), (
+	'Ana Celia de Armas Caso',
+    '1988-04-30',
+    'Ana de Armas é uma atriz cubana. Filha de pai professor e mãe profissional de RH, ganhou notoriedade por seus trabalhos em Bata Antes de Entrar, Blade Runner 2049, Entre Facas e Segredos e 007 - Sem Tempo para Morrer. Por seu trabalho mais recente, Blonde (2022), recebeu sua primeira indicação ao Oscar, na categoria de Melhor Atriz.',
+    'https://br.web.img3.acsta.net/c_310_420/pictures/18/07/25/21/25/3958186.jpg',
+    '1'
+), (
+	'Scarlett Ingrid Johansson',
+    '1984-11-22',
+    'A jovem Scarlett Johansson iniciou sua carreira no cinema aos dez anos de idade com a comédia O Anjo da Guarda (1994), na qual tinha um pequeno papel ao lado de Bruce Willis e Elijah Wood. Seu primeiro papel como protagonista veio dois anos mais tarde em Manny & Lo, no qual ela interpreta uma garota órfã e rebelde.',
+	'https://br.web.img3.acsta.net/c_310_420/pictures/20/01/07/02/04/3952839.jpg',
+    '1'
+);
+
 
 create table tbl_diretor(
 id_diretor int not null auto_increment primary key,
@@ -143,6 +177,8 @@ constraint fk_nacionalidade_AtorNacionalidade
 foreign key (id_nacionalidade) references tbl_nacionalidade(id_nacionalidade) 
 );
 
+insert into tbl_ator_nacionalidade (id_ator, id_nacionalidade) values (11, 2), (12, 1), (13, 4), (14, 3);
+
 create table tbl_diretor_nacionalidade(
 id_diretor_nacionalidade int not null auto_increment primary key,
 id_diretor int not null,
@@ -154,6 +190,21 @@ foreign key (id_nacionalidade) references tbl_nacionalidade(id_nacionalidade)
 );
                
 drop database db_acme_filmes_turma_bb_edu;
+
+select * from tbl_ator_nacionalidade;
+
+select * from tbl_ator;
+
+delete from tbl_ator where id_ator = 1;
+
+select * from tbl_nacionalidade;
+
+select * from tbl_sexo;
+
+SELECT tbl_ator_nacionalidade.id_ator, tbl_ator.nome
+FROM tbl_ator_nacionalidade
+JOIN tbl_ator ON tbl_ator_nacionalidade.id_ator = tbl_ator.id_ator
+WHERE tbl_ator_nacionalidade.id_nacionalidade = 2;
                
 select * from tbl_filme;
 select * from tbl_genero where id_genero = 1;

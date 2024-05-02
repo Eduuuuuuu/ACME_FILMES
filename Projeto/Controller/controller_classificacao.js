@@ -103,10 +103,10 @@ const setInserirNovaClassificacao = async function(dadosClassificacao, contentTy
 
             let novoClassificacaoJSON = {};
 
-            if (dadosClassificacao.caracteristica == '' || dadosClassificacao.caracteristica == undefined || dadosClassificacao.caracteristica == null || dadosClassificacao.caracteristica.length > 100 ||
+            if (dadosClassificacao.caracteristica == '' || dadosClassificacao.caracteristica == undefined || dadosClassificacao.caracteristica == null || dadosClassificacao.caracteristica.length > 150 ||
                 dadosClassificacao.classificacao  == '' || dadosClassificacao.classificacao  == undefined || dadosClassificacao.classificacao  == null || dadosClassificacao.classificacao.length  > 45  ||
                 dadosClassificacao.faixa_etaria   == '' || dadosClassificacao.faixa_etaria   == undefined || dadosClassificacao.faixa_etaria   == null || dadosClassificacao.faixa_etaria.length   > 2   ||
-                dadosClassificacao.icone          == '' || dadosClassificacao.icone          == undefined || dadosClassificacao.icone          == null || dadosClassificacao.icone.length          > 200 
+                dadosClassificacao.icone          == '' || dadosClassificacao.icone          == undefined || dadosClassificacao.icone          == null || dadosClassificacao.icone.length          > 300 
                 ) {
                     return message.ERROR_REQUIRED_FIELDS
                 } else {

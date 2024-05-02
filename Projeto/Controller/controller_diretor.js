@@ -24,7 +24,7 @@ const getListarDiretores = async function() {
 
                 for (let diretor of dadosDiretor) {
 
-                    let sexoDiretor = await sexoDAO.selectByIdSexo(id_sexo)
+                    let sexoDiretor = await sexoDAO.selectByIdSexo(diretor.id_sexo)
                     delete diretor.id_sexo
                     diretor.sexo = sexoDiretor
 
@@ -32,7 +32,7 @@ const getListarDiretores = async function() {
 
                 for (let diretor of dadosDiretor) {
 
-                    let nacionalidadeDiretor = await nacionalidadeDiretorDAO.selectByIdDiretorNacionalidade(id_nacionalidade)
+                    let nacionalidadeDiretor = await nacionalidadeDiretorDAO.selectByIdDiretorNacionalidade(diretor.id_nacionalidade)
 
                     if (nacionalidadeDiretor.length > 0) {
 
@@ -207,7 +207,7 @@ const setInserirDiretor = async function(dadosDiretor, contentType) {
             if (dadosDiretor.nome == ''            || dadosDiretor.nome == undefined            || dadosDiretor.nome == null            || dadosDiretor.nome.length > 100            ||
                 dadosDiretor.data_nascimento == '' || dadosDiretor.data_nascimento == undefined || dadosDiretor.data_nascimento == null || dadosDiretor.data_nascimento.length != 10 ||
                 dadosDiretor.biografia == ''       || dadosDiretor.biografia == undefined       || dadosDiretor.biografia == null       || dadosDiretor.biografia.length > 65000     ||
-                dadosDiretor.foto == ''            || dadosDiretor.foto == undefined            || dadosDiretor.foto == null            || dadosDiretor.foto.length > 150            ||
+                dadosDiretor.foto == ''            || dadosDiretor.foto == undefined            || dadosDiretor.foto == null            || dadosDiretor.foto.length > 300            ||
                 dadosDiretor.sexo[0].nome == ''    || dadosDiretor.sexo[0].nome == undefined    || dadosDiretor.sexo[0].nome == null    || dadosDiretor.sexo[0].nome.length > 20
             ) {
                 return message.ERROR_REQUIRED_FIELDS
@@ -227,7 +227,7 @@ const setInserirDiretor = async function(dadosDiretor, contentType) {
                         novoDiretorJSON.message     = message.SUCCESS_CREATED_ITEM.message
 
                         
-                        ultimoID = await diretorDAO.selectLastId()
+                        ultimoID = await diretorDAO.selectByLastIdDiretor()
 
                         dadosDiretor.id = ultimoID[0].id  
                         

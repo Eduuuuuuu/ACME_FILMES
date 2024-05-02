@@ -51,8 +51,8 @@ app.use((request, response, next) => {
     const controllerFilmes = require('./Controller/controller_filme.js');
     const controllerGeneros = require('./Controller/controller_genero.js');
     const controllerClassificacao = require('./Controller/controller_classificacao.js');
-
-
+    const controllerAtores = require('./Controller/controller_ator.js');
+    const controllerDiretores = require('./Controller/controller_diretor.js');
 /***********************************************************************************************************************/
 
 ////Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
@@ -298,6 +298,160 @@ app.put('/v2/ACMEFilmes/updateClassificacao/:id', cors(), bodyParserJSON, async 
     response.status(updateClassificacao.status_code);
     response.json(updateClassificacao);
 })
+
+
+
+/******************************************************************************************************************************************************************************/
+/************************************************************EndPoints dos atores************************************************************
+/******************************************************************************************************************************************************************************/
+
+
+
+app.get('/v2/ACMEFilmes/atores', cors(), async function(request, response){
+
+    let dadosAtores = await controllerAtores.getListarAtores();
+
+    if (dadosAtores) {
+        response.json(dadosAtores);
+        response.status(200);
+    } else {
+        response.json({message: 'Nenhum requisito foi encontrado'});
+        response.status(404);
+    }
+})
+
+app.get('/v2/ACMEFilmes/ator/:id', cors(), async function(request, response){
+
+    let idAtor = request.params.id
+
+    let dadosAtor = await controllerAtores.selectByIdAtor(idAtor);
+
+    response.json(dadosAtor);
+    response.status(dadosAtor.status_code);
+})
+
+app.get('/v2/ACMEFilmes/ator/filtro', cors(), async function (request, response){
+
+    let filtro = request.query.nome
+
+    let dadosAtor = await controllerAtores.selectByNomeAtor(filtro)
+
+    response.json(dadosAtor)
+    response.status(dadosAtor.status_code)
+})
+
+app.delete('/v2/ACMEFilmes/deleteAtor/:id', cors (), async function (request, response){
+
+    let idAtor = request.params.id
+
+    let dadosAtor = await controllerAtores.setExcluirAtor(idAtor)
+
+    response.json(dadosAtor)
+    response.status(dadosAtor.status_code)
+})
+
+app.post('/v2/ACMEFilmes/ator', cors(), bodyParserJSON, async function(request, response){
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDadosNovoAtor = await controllerAtores.setInserirAtor(dadosBody, contentType)
+
+    response.json(resultDadosNovoAtor)
+    response.status(resultDadosNovoAtor.status_code)
+})
+
+app.put('/v2/AMEFilmes/updateAtor/:id', cors(), bodyParserJSON, async function(request, response){
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let idAtor =  request.params.id
+
+    let resultDadosNovoAtor = await controllerAtores.setAtualizarAtor(idAtor, dadosBody, contentType)
+
+    response.json(resultDadosNovoAtor)
+    response.status(resultDadosNovoAtor.status_code)
+})
+
+
+
+/******************************************************************************************************************************************************************************/
+/************************************************************EndPoints dos diretores************************************************************
+/******************************************************************************************************************************************************************************/
+
+
+
+app.get('/v2/ACMEFilmes/diretores', cors(),async function(request, response){
+
+    let dadosDiretores = await controllerDiretores.getListarDiretores();
+
+    if (dadosDiretores) {
+        response.json(dadosDiretores);
+        response.status(200);
+    } else {
+        response.json({message: 'Nenhum registro foi encontrado'});
+        response.status(404);
+    }
+})
+
+app.get('/v2/ACMEFilmes/diretor/:id', cors(), async function(request, response){
+
+    let idDiretor = request.params.id
+
+    let dadosDiretor = await controllerDiretores.selectByIdDiretor(idDiretor);
+
+    response.json(dadosDiretor);
+    response.status(dadosDiretor.status_code);
+})
+
+app.get('/v2/ACMEFilmes/diretor/filtro', cors(), async function(request, response){
+
+    let filtro = request.query.nome
+
+    let dadosDiretor = await controllerDiretores.selectByNomeDiretor(filtro)
+
+    response.status(dadosDiretor.status_code)
+    response.json(dadosDiretor)
+})
+
+app.delete('/v2/ACMEFilmes/deleteDiretor/:id', cors (), async function(request, response){
+
+    let idDiretor = request.params.id
+
+    let dadosDiretor = await controllerDiretores.setExcluirDiretor(idDiretor);
+
+    response.status(dadosDiretor.status_code);
+    response.json(dadosDiretor)
+})
+
+app.post('/v2/ACMEFilmes/diretor', cors(), bodyParserJSON, async function(request, response){
+    
+    let contentType = request.headers['content-type']
+    
+    let dadosBody = request.body
+    
+    let resultDadosNovoDiretor = await controllerDiretores.setInserirDiretor(dadosBody, contentType)
+    
+    response.status(resultDadosNovoDiretor.status_code)
+    response.json(resultDadosNovoDiretor)
+})
+
+app.put('/v2/ACMEFilmes/updateDiretor/:id', cors(), bodyParserJSON, async function(request, response){
+    
+    let contentType = request.headers['content-type']
+    
+    let dadosBody = request.body
+    
+    let idDiretor = request.params.id
+    
+    let resultDadosNovoDiretor = await controllerDiretores.setAtualizarDiretor(idDiretor, dadosBody, contentType)
+    
+    response.status(resultDadosNovoDiretor.status_code)
+    response.json(resultDadosNovoDiretor)
+ })
 
 //Executa a API e faz ela ficar aguardando requisições
 app.listen('8080', function() {

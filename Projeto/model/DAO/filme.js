@@ -29,7 +29,8 @@ const insertFilme = async function(dadosFilme) {
                                             data_lancamento,
                                             data_relancamento,
                                             foto_capa,
-                                            valor_unitario
+                                            valor_unitario,
+                                            id_classificacao
         ) values (
                                             '${dadosFilme.nome}',
                                             '${dadosFilme.sinopse}',
@@ -37,7 +38,8 @@ const insertFilme = async function(dadosFilme) {
                                             '${dadosFilme.data_lancamento}',
                                             '${dadosFilme.data_relancamento}',
                                             '${dadosFilme.foto_capa}',
-                                            '${dadosFilme.valor_unitario}'
+                                            '${dadosFilme.valor_unitario}',
+                                            '${dadosFilme.id_classificacao}'
             )`;
         }else {
             
@@ -48,7 +50,8 @@ const insertFilme = async function(dadosFilme) {
                                             data_lancamento,
                                             data_relancamento,
                                             foto_capa,
-                                            valor_unitario
+                                            valor_unitario,
+                                            id_classificacao
         ) values (
                     '${dadosFilme.nome}',
                     '${dadosFilme.sinopse}',
@@ -56,7 +59,8 @@ const insertFilme = async function(dadosFilme) {
                     '${dadosFilme.data_lancamento}',
                     null,
                     '${dadosFilme.foto_capa}',
-                    '${dadosFilme.valor_unitario}'
+                    '${dadosFilme.valor_unitario}',
+                    '${dadosFilme.id_classificacao}'
             )`
         }
         //$executeRawUnsafe() - serve para executar scripts sem retorno de dados (insert, update e delete)
@@ -90,8 +94,9 @@ const updateFilme = async function(id, dadosFilme) {
                                                data_lancamento = '${dadosFilme.data_lancamento}',
                                                data_relancamento = '${dadosFilme.data_relancamento}',
                                                foto_capa = '${dadosFilme.foto_capa}',
-                                               valor_unitario = '${dadosFilme.valor_unitario}'
-                    where id = ${id}`;
+                                               valor_unitario = '${dadosFilme.valor_unitario}',
+                                               id_classificacao = '${dadosFilme.id_classificacao}'
+                    where id_filme = ${id}`;
         }else {
             sql = `update tbl_filme set
                                                nome = '${dadosFilme.nome}',
@@ -100,8 +105,9 @@ const updateFilme = async function(id, dadosFilme) {
                                                data_lancamento = '${dadosFilme.data_lancamento}',
                                                data_relancamento = null,
                                                foto_capa = '${dadosFilme.foto_capa}',
-                                               valor_unitario = '${dadosFilme.valor_unitario}'
-                    where id = ${id}`;
+                                               valor_unitario = '${dadosFilme.valor_unitario}',
+                                               id_classificacao = '${dadosFilme.id_classificacao}'
+                    where id_filme = ${id}`;
         }
 
         let result = await prisma.$executeRawUnsafe(sql);
@@ -120,7 +126,7 @@ const updateFilme = async function(id, dadosFilme) {
 const deleteFilme = async function(id) {
     try {
 
-        let sql = `delete from tbl_filme where id = ${id}`;
+        let sql = `delete from tbl_filme where id_filme = ${id}`;
 
         let rsFilmes = await prisma.$queryRawUnsafe(sql)
 
@@ -185,7 +191,7 @@ const selectByNome = async function(nome) {
 const selectByLastId = async function() {
     try {
 
-        let sql =  `select cast(last_insert_id() as decimal) as id from tbl_filme limit 1`;
+        let sql =  `select cast(last_insert_id() as decimal) as id_filme from tbl_filme limit 1`;
 
         let rsFilme = await prisma.$queryRawUnsafe(sql);
 

@@ -24,7 +24,7 @@ const getListarAtores = async function() {
 
                 for (let ator of dadosAtores) {
 
-                    let sexoAtor = await sexoDAO.selectByIdSexo(id_sexo)
+                    let sexoAtor = await sexoDAO.selectByIdSexo(ator.id_sexo)
                     delete ator.id_sexo
                     ator.sexo = sexoAtor
 
@@ -32,7 +32,7 @@ const getListarAtores = async function() {
 
                 for (let ator of dadosAtores) {
 
-                    let nacionalidadeAtor = await nacionalidadeAtorDAO.selectByIdAtorNacionalidade(id_nacionalidade)
+                    let nacionalidadeAtor = await nacionalidadeAtorDAO.selectByIdAtorNacionalidade(ator.id_nacionalidade)
                         
                     if (nacionalidadeAtor.length > 0) {
 
@@ -135,18 +135,18 @@ const setExcluirAtor = async function(id) {
     }
 }
 
-const selectByNomeAtor = async function(nome) {
+const selectByNomeAtor = async function(filtro) {
     try {
 
-        let atorNome = nome 
+        let nome = filtro;
 
-        let atorJSON = {}
+        let atorJSON = {};
     
-        if (atorNome == '' || atorNome == undefined || isNaN(atorNome)) {
+        if (nome == '' || nome == undefined) {
             return message.ERROR_INVALID_ID
         } else {
             
-            let dadosAtor = await atorDAO.selectByNomeAtor(atorNome)
+            let dadosAtor = await atorDAO.selectByNomeAtor(nomeAtor)
             
             if (dadosAtor) {
                 
@@ -213,7 +213,7 @@ const setAtualizarAtor = async function(id, dadosAtor, contentType) {
                         updateAtorJSON.status_code  = message.SUCCESS_UPDATE_ITEM.status_code
                         updateAtorJSON.message      = message.SUCCESS_UPDATE_ITEM.message
                         
-                        return updateAtor
+                        return updateAtorJSON
 
                     } else {
                         return message.ERROR_NOT_FOUND
@@ -233,7 +233,7 @@ const setAtualizarAtor = async function(id, dadosAtor, contentType) {
 const setInserirAtor = async function(dadosAtor, contentType) {
     try {
 
-        if (String(contentType).toLowerCase()=='application/json') {
+        if (String(contentType).toLowerCase() == 'application/json') {
             
             let novoAtorJSON = {}
             
@@ -242,7 +242,7 @@ const setInserirAtor = async function(dadosAtor, contentType) {
             if (dadosAtor.nome == ''            || dadosAtor.nome == undefined            || dadosAtor.nome == null            || dadosAtor.nome.length > 100            ||
                 dadosAtor.data_nascimento == '' || dadosAtor.data_nascimento == undefined || dadosAtor.data_nascimento == null || dadosAtor.data_nascimento.length != 10 ||
                 dadosAtor.biografia == ''       || dadosAtor.biografia == undefined       || dadosAtor.biografia == null       || dadosAtor.biografia.length > 65000     ||
-                dadosAtor.foto == ''            || dadosAtor.foto == undefined            || dadosAtor.foto == null            || dadosAtor.foto.length > 200            ||
+                dadosAtor.foto == ''            || dadosAtor.foto == undefined            || dadosAtor.foto == null            || dadosAtor.foto.length > 300            ||
                 dadosAtor.sexo[0].nome == ''    || dadosAtor.sexo[0].nome == undefined    || dadosAtor.sexo[0].nome == null    || dadosAtor.sexo[0].nome.length > 20
             ) {
                 return message.ERROR_REQUIRED_FIELDS
@@ -262,7 +262,7 @@ const setInserirAtor = async function(dadosAtor, contentType) {
                         novoAtorJSON.message     = message.SUCCESS_CREATED_ITEM.message
 
                         
-                        ultimoID = await atorDAO.selectLastId()
+                        ultimoID = await atorDAO.selectByLastIdAtor()
                         
                         dadosAtor.id = ultimoID[0].id  
                         

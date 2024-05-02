@@ -21,7 +21,7 @@ const selectAllClassificacao = async function() {
         return false
 }
 
-const selectByidClassificacao = async function(id) {
+const selectByIdClassificacao = async function(id) {
     try {
 
         let sql = `select * from tbl_classificacao where id_classificacao = ${id}`;
@@ -114,7 +114,7 @@ const updateClassificacao = async function(id, dadosClassificacao) {
 
 module.exports = {
     selectAllClassificacao,
-    selectByidClassificacao,
+    selectByIdClassificacao,
     selectByLastIdClassificacao,
     insertClassificacao,
     deleteClassificacao,
