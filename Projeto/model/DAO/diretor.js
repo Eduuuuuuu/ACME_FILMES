@@ -63,7 +63,7 @@ const insertDiretor = async function(dadosDiretor) {
                                                     '${dadosDiretor.data_nascimento}',
                                                     '${dadosDiretor.biografia}',
                                                     '${dadosDiretor.foto}',
-                                                    '${dadosDiretor.sexo[0].id}'
+                                                    '${dadosDiretor.id_sexo}'
         )`;
 
         let result = await prisma.$executeRawUnsafe(sql)

@@ -243,7 +243,7 @@ const setInserirAtor = async function(dadosAtor, contentType) {
                 dadosAtor.data_nascimento == '' || dadosAtor.data_nascimento == undefined || dadosAtor.data_nascimento == null || dadosAtor.data_nascimento.length != 10 ||
                 dadosAtor.biografia == ''       || dadosAtor.biografia == undefined       || dadosAtor.biografia == null       || dadosAtor.biografia.length > 65000     ||
                 dadosAtor.foto == ''            || dadosAtor.foto == undefined            || dadosAtor.foto == null            || dadosAtor.foto.length > 300            ||
-                dadosAtor.sexo[0].nome == ''    || dadosAtor.sexo[0].nome == undefined    || dadosAtor.sexo[0].nome == null    || dadosAtor.sexo[0].nome.length > 20
+                dadosAtor.id_sexo == ''         || dadosAtor.id_sexo == undefined         || dadosAtor.id_sexo == null         || dadosAtor.id_sexo.length > 20 
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {

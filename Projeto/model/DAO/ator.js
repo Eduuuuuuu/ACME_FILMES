@@ -6,6 +6,7 @@
  *******************************************************************************************************************************************/
 
 const {PrismaClient} = require('@prisma/client');
+const { selectByIdAtorNacionalidade } = require('./nacionalidadeAtor');
 
 
 const prisma = new PrismaClient();
@@ -89,10 +90,24 @@ const insertAtor = async function(dadosAtor) {
                                                 '${dadosAtor.data_nascimento}',
                                                 '${dadosAtor.biografia}',
                                                 '${dadosAtor.foto}',
-                                                '${dadosAtor.sexo[0].id}'
+                                                '${dadosAtor.id_sexo}'
         )`;
 
         let result = await prisma.$executeRawUnsafe(sql)
+
+        if (result) {
+
+            for (let nacionalidade of dadosAtor.id_nacionalidade) {
+
+                let nacionalidadeAtor = await selectByIdAtorNacionalidade()
+
+                result=await prisma.$executeRawUnsafe(sql)
+                if(result)
+                    continue
+                else
+                    return false
+            }
+        }
 
         if (result)
             return true

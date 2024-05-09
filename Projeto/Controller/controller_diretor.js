@@ -208,7 +208,7 @@ const setInserirDiretor = async function(dadosDiretor, contentType) {
                 dadosDiretor.data_nascimento == '' || dadosDiretor.data_nascimento == undefined || dadosDiretor.data_nascimento == null || dadosDiretor.data_nascimento.length != 10 ||
                 dadosDiretor.biografia == ''       || dadosDiretor.biografia == undefined       || dadosDiretor.biografia == null       || dadosDiretor.biografia.length > 65000     ||
                 dadosDiretor.foto == ''            || dadosDiretor.foto == undefined            || dadosDiretor.foto == null            || dadosDiretor.foto.length > 300            ||
-                dadosDiretor.sexo[0].nome == ''    || dadosDiretor.sexo[0].nome == undefined    || dadosDiretor.sexo[0].nome == null    || dadosDiretor.sexo[0].nome.length > 20
+                dadosDiretor.id_sexo == ''         || dadosDiretor.id_sexo == undefined         || dadosDiretor.id_sexo == null         || dadosDiretor.id_sexo.length > 20
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
@@ -232,6 +232,7 @@ const setInserirDiretor = async function(dadosDiretor, contentType) {
                         dadosDiretor.id = ultimoID[0].id  
                         
                         return novoDiretorJSON
+                        
                     } else {
                         return message.ERROR_INTERNAL_SERVER_DB
                     }
