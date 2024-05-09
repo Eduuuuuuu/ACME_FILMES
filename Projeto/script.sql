@@ -32,7 +32,8 @@ insert into tbl_filme (
                             data_lancamento,
                             data_relancamento,
                             foto_capa,
-                            valor_unitario
+                            valor_unitario,
+                            id_classificacao
 					  ) values(
 							'Gente Grande',
                             'Em Gente Grande, Lenny (Adam Sandler), Kurt (Chris Rock), Eric (Kevin James), Marcus (David Spade) e Rob (Rob Schneider) se conhecem desde pequenos. Passados trinta anos, os cinco amigos se reencontram para curtir um fim de semana juntos com as respectivas famílias, mas o feriado de 4 de Julho em uma casa no lago promete muito mais diversão do que apenas lembranças dos bons momentos. Casados e com várias crianças, os homens de família terão de confrontar o fato de não serem mais tão jovens.',
@@ -40,7 +41,8 @@ insert into tbl_filme (
                             '2010-09-24',
                             null,
                             'https://br.web.img3.acsta.net/c_310_420/pictures/210/299/21029996_20130821205722213.jpg',
-                            '55.00'
+                            '55.00',
+                            '5'
                       ),	 (
 							'Gente Grande 2',
                             'Lenny (Adam Sandler), Eric (Kevin James), Kurt (Chris Rock) e Marcus (David Spade) voltam a morar na mesma cidade. Lá, suas vidas seguem o curso natural dos adultos, seja pela existência dos problemas com as esposas para uns, com os filhos para outros, ou tudo junto e misturado. A coisa dá uma complicada quando os marmanjos pretendiam matar a saudade num dia de folga e acabam encarando os jovens da região, que agora dominam o lugar. É quando eles acabam tendo que enfrentar alguns fantasmas do passado, entre eles a covardia diante de valentões e o famigerado bullyng na escola. Mas algumas surpresas estão para acontecer, como a chegada de um filho rebelde para Marcus domar, uma possível gravidez e uma festa de arromba, que não vai deixar pedra sobre pedra.',
@@ -48,7 +50,8 @@ insert into tbl_filme (
                             '2013-08-16',
                             null,
                             'https://br.web.img3.acsta.net/c_310_420/pictures/210/049/21004903_20130510170049514.jpg',
-                            '55.00'
+                            '55.00',
+                            '5'
 					  );
                       
 create table tbl_genero(
@@ -83,10 +86,10 @@ icone varchar(200) not null
 
 create table tbl_ator(
 id_ator int not null auto_increment primary key,
-nome varchar(100) not null,
+nome varchar(150) not null,
 data_nascimento date not null,
 biografia text,
-foto varchar(200) not null,
+foto varchar(300) not null,
 id_sexo int not null,
 
 constraint fk_sexo_ator
@@ -147,6 +150,8 @@ constraint fk_genero_FilmeGenero
 foreign key (id_genero) references tbl_genero(id_genero)
 );
 
+insert into tbl_filme_genero (id_filme, id_genero) values (7, 1), (8, 1), (8, 2), (9, 2), (9, 1);
+
 create table tbl_filme_ator(
 id_filme_ator int not null auto_increment primary key,
 id_filme int not null,
@@ -157,6 +162,8 @@ constraint fk_ator_FilmeAtor
 foreign key (id_ator) references tbl_ator(id_ator) 
 );
 
+insert into tbl_filme_ator (id_filme, id_ator) values (7, 19), (8, 18), (8, 16), (9, 14), (9, 4), (9, 11);
+
 create table tbl_filme_diretor(
 id_filme_diretor int not null auto_increment primary key,
 id_filme int not null,
@@ -166,6 +173,8 @@ foreign key (id_filme) references tbl_filme(id_filme),
 constraint fk_diretor_FilmeDiretor
 foreign key (id_diretor) references tbl_diretor(id_diretor)
 );
+
+insert into tbl_filme_diretor (id_filme, id_diretor) values (7, 1), (8, 4), (9, 3), (9, 2) ;
 
 create table tbl_ator_nacionalidade(
 id_ator_nacionalidade int not null auto_increment primary key,
@@ -195,11 +204,34 @@ select * from tbl_ator_nacionalidade;
 
 select * from tbl_ator;
 
+select * from tbl_genero;
+
+select * from tbl_diretor;
+
 delete from tbl_ator where id_ator = 1;
 
 select * from tbl_nacionalidade;
 
 select * from tbl_sexo;
+
+select * from tbl_classificacao;
+
+select * from tbl_filme;
+
+SELECT tbl_ator.id_ator, nome, data_nascimento, biografia, foto, id_sexo
+FROM tbl_ator
+INNER JOIN tbl_filme_ator ON tbl_ator.id_ator = tbl_filme_ator.id_ator
+WHERE tbl_filme_ator.id_filme = 9;
+
+SELECT tbl_diretor.id_diretor, nome, data_nascimento, biografia, foto
+FROM tbl_diretor
+INNER JOIN tbl_filme_diretor ON tbl_diretor.id_diretor = tbl_filme_diretor.id_diretor
+WHERE tbl_filme_diretor.id_filme = 9;
+
+SELECT tbl_genero.id_genero, nome
+FROM tbl_filme_genero
+JOIN tbl_genero ON tbl_filme_genero.id_genero = tbl_genero.id_genero
+WHERE tbl_filme_genero.id_filme = 9;
 
 SELECT tbl_ator_nacionalidade.id_ator, tbl_ator.nome
 FROM tbl_ator_nacionalidade
