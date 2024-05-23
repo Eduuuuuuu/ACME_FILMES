@@ -135,7 +135,7 @@ const setInserirNovoGenero = async function(dadosGenero, contentType) {
                             return novoGeneroJSON;
 
                         } else {
-                            return messsage.ERROR_INTERNAL_SERVER_DB;
+                            return message.ERROR_INTERNAL_SERVER_DB;
                         }
                     }
                 }
